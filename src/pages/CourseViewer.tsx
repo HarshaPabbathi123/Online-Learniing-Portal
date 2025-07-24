@@ -28,6 +28,13 @@ interface Enrollment {
   }>;
   progressPercentage: number;
 }
+function getYouTubeEmbedUrl(url: string): string | null {
+  const match = url.match(
+    /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+  );
+  return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+}
+
 
 const CourseViewer: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
@@ -201,19 +208,19 @@ const CourseViewer: React.FC = () => {
             {/* Module Content */}
             <div className="p-6">
               {/* Video Player */}
-              {currentModule.videoUrl && (
-                <div className="mb-8">
-                  <div className="aspect-video bg-gray-900 rounded-lg overflow-hidden">
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="text-center text-white">
-                        <Play className="h-16 w-16 mx-auto mb-4 opacity-75" />
-                        <p className="text-lg">Video Player</p>
-                        <p className="text-sm opacity-75">Video URL: {currentModule.videoUrl}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+              {currentModule.videoUrl && getYouTubeEmbedUrl(currentModule.videoUrl) && (
+  <div className="mb-8">
+    <div className="aspect-video rounded-lg overflow-hidden">
+      <iframe
+        className="w-full h-full"
+        src={getYouTubeEmbedUrl(currentModule.videoUrl)!}
+        title="Module Video"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    </div>
+  </div>
+)}
 
               {/* Module Content */}
               <div className="prose max-w-none">

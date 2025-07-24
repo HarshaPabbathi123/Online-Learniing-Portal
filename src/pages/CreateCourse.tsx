@@ -11,7 +11,12 @@ interface Module {
   duration: number;
   order: number;
 }
-
+function getYouTubeEmbedUrl(url: string): string | null {
+  const match = url.match(
+    /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/
+  );
+  return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+}
 const CreateCourse: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -274,18 +279,29 @@ const CreateCourse: React.FC = () => {
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Video URL (Optional)
-                    </label>
-                    <input
-                      type="url"
-                      value={module.videoUrl}
-                      onChange={(e) => handleModuleChange(index, 'videoUrl', e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="https://example.com/video.mp4"
+                   <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Video URL (YouTube only)</label>
+                <input
+                  type="url"
+                  value={module.videoUrl}
+                  onChange={(e) => handleModuleChange(index, 'videoUrl', e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="https://www.youtube.com/watch?v=..."
+                />
+                {module.videoUrl && getYouTubeEmbedUrl(module.videoUrl) && (
+                  <div className="mt-4">
+                    <iframe
+                      width="100%"
+                      height="315"
+                      src={getYouTubeEmbedUrl(module.videoUrl)!}
+                      title={`Module Video Preview ${index + 1}`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="rounded-lg border"
                     />
                   </div>
+                )}
+              </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">

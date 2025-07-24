@@ -12,16 +12,24 @@ router.get('/dashboard-stats', auth, async (req, res) => {
     let stats = {};
 
     if (req.user.role === 'student') {
-      const enrollments = await Enrollment.find({ student: req.user.userId });
-      const totalCourses = enrollments.length;
-      const completedCourses = enrollments.filter(e => e.progressPercentage === 100).length;
-      
-      stats = {
-        totalCourses,
-        completedCourses,
-        inProgressCourses: totalCourses - completedCourses,
-        enrollments
-      };
+  const enrollments = await Enrollment.find({ student: req.user.userId })
+    .populate({
+      path: 'course',
+      populate: {
+        path: 'instructor',
+        select: 'name avatar'
+      }
+    });
+
+  const totalCourses = enrollments.length;
+  const completedCourses = enrollments.filter(e => e.progressPercentage === 100).length;
+
+  stats = {
+    totalCourses,
+    completedCourses,
+    inProgressCourses: totalCourses - completedCourses,
+    enrollments
+  };
     } else if (req.user.role === 'instructor') {
       const courses = await Course.find({ instructor: req.user.userId });
       const totalCourses = courses.length;
