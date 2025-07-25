@@ -120,7 +120,7 @@ const EditCourse: React.FC = () => {
         }))
       };
 
-      await axios.put(`http://localhost:5000/api/courses/${id}`, coursePayload);
+      await axios.put(`http://localhost:5001/api/courses/${id}`, coursePayload);
       alert('Course updated successfully!');
       navigate('/dashboard');
     } catch (error: any) {
