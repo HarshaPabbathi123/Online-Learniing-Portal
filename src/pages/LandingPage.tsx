@@ -89,7 +89,7 @@ const LandingPage: React.FC = () => {
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
               Learn Without
-              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"> Limits</span>
+              <span className="bg-gradient-to-r from-blue-600 to-orange-600 bg-clip-text text-transparent"> Limits</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
               Join thousands of learners worldwide and unlock your potential with our expert-led courses, 
@@ -118,7 +118,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-white/50 backdrop-blur-sm">
+      <section className="py-16 bg-orange/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
